@@ -1,0 +1,29 @@
+.container {
+  background: var(--darkPink);
+  width: 100vw;
+}
+.img {
+  background: url("../../assets/img/home.gif");
+  background-repeat: no-repeat;
+  height: 100vh;
+  background-position: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  button {
+    height: fit-content;
+    margin: 5px;
+    margin-top: 40px;
+    padding: 10px 15px;
+    font-size: 24pt;
+    letter-spacing: 5px;
+    border-radius: 6px;
+    border: 6px solid var(--green);
+    background: var(--purple);
+    box-shadow: 0px 0px 10px rgb(61, 38, 58);
+    cursor: pointer;
+    color: var(--darkPink);
+    text-shadow: 0px 0px 2px rgb(22, 22, 22);
+  }
+}

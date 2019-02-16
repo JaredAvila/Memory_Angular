@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Coiny", cursive;
+}
+
+:root {
+  --pink: rgb(255, 132, 153);
+  --darkPink: #d23284;
+  --blue: #3d77c8;
+  --purple: #c990d8;
+  --green: #72c258;
+  --yellow: #e9d518;
+  --orange: #f07f1a;
+}
