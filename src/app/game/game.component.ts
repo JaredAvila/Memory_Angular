@@ -6,7 +6,7 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./game.component.scss"]
 })
 export class GameComponent implements OnInit {
-  shuffledCards: Array<Number> = [];
+  shuffledCards: Array<Object> = [];
   constructor() {}
 
   ngOnInit() {
@@ -30,9 +30,16 @@ export class GameComponent implements OnInit {
       if (deckCheck[randomNum] < 2) {
         deckCheck[randomNum] += 1;
         deckCheck["size"] += 1;
-        this.shuffledCards.push(randomNum);
+        this.shuffledCards.push({ card: randomNum, status: "notClicked" });
       }
     }
+  }
+  selectedCard(card) {
+    card["status"] = "clicked";
+    console.log("clicked ", card["card"], " status: ", card["status"]);
+    setTimeout(() => {
+      card["status"] = "notClicked";
+    }, 2000);
   }
 
   randomNumber(min, max) {

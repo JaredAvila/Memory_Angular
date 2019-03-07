@@ -7,7 +7,16 @@
   </div>
   <div class="cards">
     <div *ngFor="let card of shuffledCards">
-      <img src="../../assets/img/{{ card }}.jpg" alt="" />
+      <div *ngIf="card['status'] === 'clicked'; else notClicked">
+        <img src="../../assets/img/{{ card['card'] }}.jpg" alt="" />
+      </div>
+      <ng-template #notClicked>
+        <img
+          (click)="selectedCard(card)"
+          src="../../assets/img/cardBack.jpg"
+          alt=""
+        />
+      </ng-template>
     </div>
   </div>
 
