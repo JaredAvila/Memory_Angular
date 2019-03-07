@@ -9,17 +9,15 @@ import { Router } from "@angular/router";
 export class GameComponent implements OnInit {
   shuffledCards: Array<Object> = [];
   playerOne: Object = {
-    name: "Poppy",
+    name: "",
     turn: "active",
     activeCards: [],
-    flips: 0,
     score: 0
   };
   playerTwo: Object = {
-    name: "Branch",
+    name: "",
     turn: "notActive",
     activeCards: [],
-    flips: 0,
     score: 0
   };
   constructor(private router: Router) {}
@@ -27,15 +25,15 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.shuffleDeck();
     this.getPlayerOneName();
-  }
-
-  getPlayerOneName() {
-    this.playerOne["name"] = prompt("Player One, enter your name: ");
     this.getPlayerTwoName();
   }
 
+  getPlayerOneName() {
+    this.playerOne["name"] = prompt("Player One, enter your name: ", "Poppy");
+  }
+
   getPlayerTwoName() {
-    this.playerTwo["name"] = prompt("Player Two, enter your name: ");
+    this.playerTwo["name"] = prompt("Player Two, enter your name: ", "Branch");
   }
 
   shuffleDeck() {
@@ -62,71 +60,85 @@ export class GameComponent implements OnInit {
 
   selectedCard(card) {
     card["status"] = "clicked";
-
     //PlAYER ONE
     if (this.playerOne["turn"] === "active") {
-      this.playerOne["activeCards"].push(card);
-      if (this.playerOne["activeCards"].length === 2) {
-        if (
-          this.playerOne["activeCards"][0]["card"] ===
-          this.playerOne["activeCards"][1]["card"]
-        ) {
-          this.playerOne["score"]++;
-          if (this.playerOne["score"] + this.playerTwo["score"] !== 8) {
-            setTimeout(() => {
-              alert("YAY! You found a match!! Take another turn.");
-              this.playerOne["activeCards"] = [];
-            }, 100);
-          }
-        } else {
-          setTimeout(() => {
-            alert("Not a match!");
-            this.playerOne["activeCards"][0]["status"] = "notClicked";
-            this.playerOne["activeCards"][1]["status"] = "notClicked";
-            this.playerOne["activeCards"] = [];
-            this.playerOne["turn"] = "notActive";
-            this.playerTwo["turn"] = "active";
-          }, 100);
-        }
-      }
+      this.playerOneTurn(card);
     }
-
     //PlAYER TWO
     if (this.playerTwo["turn"] === "active") {
-      this.playerTwo["activeCards"].push(card);
-      if (this.playerTwo["activeCards"].length === 2) {
-        if (
-          this.playerTwo["activeCards"][0]["card"] ===
-          this.playerTwo["activeCards"][1]["card"]
-        ) {
-          this.playerTwo["score"]++;
-          if (this.playerOne["score"] + this.playerTwo["score"] !== 8) {
-            setTimeout(() => {
-              alert("YAY! You found a match!! Take another turn.");
-              this.playerTwo["activeCards"] = [];
-            }, 100);
-          }
-        } else {
+      this.playerTwoTurn(card);
+    }
+    if (this.playerOne["score"] + this.playerTwo["score"] === 8) {
+      setTimeout(() => {
+        this.gameOver();
+      }, 100);
+    }
+  }
+
+  playerOneTurn(card) {
+    this.playerOne["activeCards"].push(card);
+    if (this.playerOne["activeCards"].length === 2) {
+      if (
+        this.playerOne["activeCards"][0]["card"] ===
+        this.playerOne["activeCards"][1]["card"]
+      ) {
+        this.playerOne["score"]++;
+        if (this.playerOne["score"] + this.playerTwo["score"] !== 8) {
           setTimeout(() => {
-            alert("Not a match!");
-            this.playerTwo["activeCards"][0]["status"] = "notClicked";
-            this.playerTwo["activeCards"][1]["status"] = "notClicked";
-            this.playerTwo["activeCards"] = [];
-            this.playerTwo["turn"] = "notActive";
-            this.playerOne["turn"] = "active";
+            alert("YAY! You found a match!! Take another turn.");
+            this.playerOne["activeCards"] = [];
           }, 100);
         }
+      } else {
+        setTimeout(() => {
+          alert("Not a match!");
+          this.playerOne["activeCards"][0]["status"] = "notClicked";
+          this.playerOne["activeCards"][1]["status"] = "notClicked";
+          this.playerOne["activeCards"] = [];
+          this.playerOne["turn"] = "notActive";
+          this.playerTwo["turn"] = "active";
+        }, 100);
       }
     }
+  }
 
-    if (this.playerOne["score"] + this.playerTwo["score"] == 8) {
-      if (this.playerOne["score"] > this.playerTwo["score"]) {
-        alert(`${this.playerOne["name"]} wins!`);
-        this.router.navigate(["/"]);
+  playerTwoTurn(card) {
+    this.playerTwo["activeCards"].push(card);
+    if (this.playerTwo["activeCards"].length === 2) {
+      if (
+        this.playerTwo["activeCards"][0]["card"] ===
+        this.playerTwo["activeCards"][1]["card"]
+      ) {
+        this.playerTwo["score"]++;
+        if (this.playerOne["score"] + this.playerTwo["score"] !== 8) {
+          setTimeout(() => {
+            alert("YAY! You found a match!! Take another turn.");
+            this.playerTwo["activeCards"] = [];
+          }, 100);
+        }
       } else {
-        alert(`${this.playerTwo["name"]} wins!`);
-        this.router.navigate(["/"]);
+        setTimeout(() => {
+          alert("Not a match!");
+          this.playerTwo["activeCards"][0]["status"] = "notClicked";
+          this.playerTwo["activeCards"][1]["status"] = "notClicked";
+          this.playerTwo["activeCards"] = [];
+          this.playerTwo["turn"] = "notActive";
+          this.playerOne["turn"] = "active";
+        }, 100);
       }
+    }
+  }
+
+  gameOver() {
+    if (this.playerOne["score"] > this.playerTwo["score"]) {
+      alert(`${this.playerOne["name"]} wins!`);
+      this.router.navigate(["/"]);
+    } else if (this.playerOne["score"] < this.playerTwo["score"]) {
+      alert(`${this.playerTwo["name"]} wins!`);
+      this.router.navigate(["/"]);
+    } else {
+      alert("It's a tie! EVEYRONE WINS!");
+      this.router.navigate(["/"]);
     }
   }
 
