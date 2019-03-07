@@ -24,6 +24,16 @@
   width: 300px;
   padding: 40px;
   margin: auto;
+
+  h1 {
+    text-align: center;
+    color: var(--pink);
+    text-shadow: 0px 0px 2px black;
+    background: var(--green);
+    margin: 5px;
+    border-radius: 25px;
+    border: 4px dotted var(--yellow);
+  }
 }
 
 .info {
